@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlessedTexts API Documentation</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --background: #f9fafb;
+      --text: #111827;
+      --border: #e5e7eb;
+      --code-bg: #f3f4f6;
+    }
+
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    h2 {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.3rem;
+      color: var(--primary);
+      margin-top: 2rem;
+    }
+
+    p {
+      margin: 1rem 0;
+    }
+
+    code {
+      background-color: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: "Consolas", monospace;
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: "Consolas", monospace;
+    }
+
+    .endpoint {
+      background-color: white;
+      border: 1px solid var(--border);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .method {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 0 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BlessedTexts API Documentation</h1>
+    <p>Simple, reliable SMS sending API</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Overview</h2>
+      <p>The BlessedTexts API allows you to send SMS messages programmatically using HTTP requests. 
+      It provides a simple REST interface that can be integrated into web or mobile applications.</p>
+    </section>
+
+    <section>
+      <h2>Base URL</h2>
+      <pre>https://api.blessedtexts.com/v1/</pre>
+    </section>
+
+    <section>
+      <h2>Authentication</h2>
+      <p>Each request must include your unique <code>API_KEY</code> in the request header:</p>
+      <pre>
+Authorization: Bearer YOUR_API_KEY
+      </pre>
+    </section>
+
+    <section>
+      <h2>Endpoints</h2>
+
+      <div class="endpoint">
+        <div><span class="method">POST</span> <code>/send_sms/</code></div>
+        <p>Send a single SMS message to one or more recipients.</p>
+        <h3>Parameters</h3>
+        <ul>
+          <li><code>phone_number</code> – Recipient’s phone number (string)</li>
+          <li><code>message</code> – Message text (string)</li>
+        </ul>
+
+        <h3>Example Request</h3>
+        <pre>
+POST /send_sms/
+Content-Type: application/json
+Authorization: Bearer YOUR_API_KEY
+
+{
+  "phone_number": "+254700000000",
+  "message": "Hello from BlessedTexts!"
+}
+        </pre>
+
+        <h3>Example Response</h3>
+        <pre>
+{
+  "status": "success",
+  "message_id": "e5a2cbd2",
+  "details": "Message sent successfully"
+}
+        </pre>
+      </div>
+
+      <div class="endpoint">
+        <div><span class="method">GET</span> <code>/message_status/&lt;message_id&gt;/</code></div>
+        <p>Retrieve the delivery status of a previously sent message.</p>
+
+        <h3>Example Request</h3>
+        <pre>
+GET /message_status/e5a2cbd2/
+Authorization: Bearer YOUR_API_KEY
+        </pre>
+
+        <h3>Example Response</h3>
+        <pre>
+{
+  "message_id": "e5a2cbd2",
+  "status": "Delivered",
+  "timestamp": "2025-10-06T13:45:00Z"
+}
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Error Responses</h2>
+      <p>The API uses standard HTTP response codes to indicate success or failure:</p>
+      <ul>
+        <li><code>200 OK</code> – Request successful</li>
+        <li><code>400 Bad Request</code> – Missing or invalid parameters</li>
+        <li><code>401 Unauthorized</code> – Invalid or missing API key</li>
+        <li><code>500 Internal Server Error</code> – Server-side issue</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
